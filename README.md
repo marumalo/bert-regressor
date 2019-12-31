@@ -32,7 +32,7 @@ python run_regression.py \
   --do_train
   --data ./sample_data/sample_train.tsv \
   --save_dir ./checkpoints \
-  --model bert \
+  --model_type bert \
   --model_name_or_path bert-based-multilingual-cased \
   --num_labels 1 \
   --max_epoch 3 \
@@ -49,7 +49,7 @@ Evaluation of fine-tuned model by F1 score.
 python run_regression.py \
   --do_eval \
   --data ./sample_data/sample_eval.tsv \
-  --model bert \
+  --model_type bert \
   --model_name_or_path ./checkpoints \
   --num_labels 1 \
   --threshold 0.5
@@ -65,7 +65,7 @@ Output score.
 python run_regression.py \
   --do_test \
   --data ./sample_data/sample_test.tsv \
-  --model bert \
+  --model_type bert \
   --model_name_or_path ./checkpoints \
   --num_labels 1
 ```
