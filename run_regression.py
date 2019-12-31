@@ -236,13 +236,13 @@ if __name__ == '__main__':
     '''
     )
 
-    Required
+    # Required
     parser.add_argument("--model_type", default=None, type=str, required=True,
         help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
     parser.add_argument("--model_name_or_path", default=None, type=str, required=True,
         help="Path to pre-trained model or shortcut name selected in the list: " \
              + ", ".join(ALL_MODELS))
-    parser.add_argument("--num-labels", default=None, type=int, required=True,
+    parser.add_argument("--num_labels", default=None, type=int, required=True,
         help="Number of output classes")
     parser.add_argument("--save_dir", default=None, type=str, 
         help="The output directory where the model predictions and checkpoints "
