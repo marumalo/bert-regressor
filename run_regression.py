@@ -134,7 +134,7 @@ def main(args):
             outputs = model(input_ids, token_type_ids=token_type_ids, labels=labels)[1]
 
             if args.num_labels > 1:
-                preds = torch.argmax(outputs, dim=1).squeeze(1)
+                preds = torch.argmax(outputs, dim=1)
             else:
                 preds = torch.ge(outputs, args.threshold).int().squeeze(1)
 
@@ -145,9 +145,10 @@ def main(args):
         preds_list = torch.cat(preds_list)
         refs_list = torch.cat(refs_list)
 
-        precision = precision_score(refs_list, preds_list)
-        recall = recall_score(refs_list, preds_list)
-        f1 = f1_score(refs_list, preds_list)
+        avg = 'macro' if args.num_labels > 1 else 'micro'
+        precision = precision_score(refs_list, preds_list, average=avg)
+        recall = recall_score(refs_list, preds_list, average=avg)
+        f1 = f1_score(refs_list, preds_list, average=avg)
 
         print(f"Presion: {precision * 100}", end='\t')
         print(f"Recall: {recall * 100}", end='\t')
@@ -183,12 +184,14 @@ def main(args):
             token_type_ids = torch.cat(token_type_ids, dim=1).to(device)
             outputs = model(input_ids, token_type_ids=token_type_ids)[0]
 
-            for src, ref, score in zip(batch.src, batch.ref, outputs):
+            for src, ref, out in zip(batch.src, batch.ref, outputs):
                 src = src[1:src.tolist().index(tokenizer.sep_token_id)]
                 ref = ref[1:ref.tolist().index(tokenizer.sep_token_id)]
                 src = tokenizer.decode(src)
                 ref = tokenizer.decode(ref)
-                print(src + '\t' + ref + '\t' + str(score.item()))
+                if args.num_labels > 1:
+                    out = torch.argmax(out)
+                print(src + '\t' + ref + '\t' + str(out.item()))
 
 
 def train(args, train_iter, model, device):
