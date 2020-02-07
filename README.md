@@ -29,11 +29,11 @@ Fine-tuning pre-trained model on your supervised data.  If you want to do classi
 ```shell
 mkdir ./checkpoints # directory to save fine-tuned model
 python run_regression.py \
-  --do_train
+  --do_train \
   --data ./sample_data/sample_train.tsv \
   --save_dir ./checkpoints \
   --model_type bert \
-  --model_name_or_path bert-based-multilingual-cased \
+  --model_name_or_path bert-base-multilingual-cased \
   --num_labels 1 \
   --max_epoch 3 \
   --gpu
